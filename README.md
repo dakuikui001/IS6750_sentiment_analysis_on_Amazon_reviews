@@ -1,4 +1,4 @@
-# Social Media Analysis: Video Game Review Classification
+# Amazon Video Game Review Classification
 
 This project focuses on sentiment analysis of video game reviews using machine learning techniques. The goal is to classify reviews as either positive or negative based on their text content.
 
