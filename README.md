@@ -8,7 +8,8 @@ This repository contains a complete pipeline for text classification of video ga
 
 ## Dataset
 
-The project uses the **Video Games 5** dataset from Amazon, which contains video game reviews with ratings and review text. The original dataset is stored as `Video_Games_5.json.gz` in the `data/` directory.
+The project uses the **Video Games 5** dataset from Amazon, which contains video game reviews with ratings and review text. 
+Please download the original dataset from https://jmcauley.ucsd.edu/data/amazon_v2/categoryFilesSmall/Video_Games_5.json.gz and stored as `Video_Games_5.json.gz` in the `data/` directory.
 
 ## Project Structure
 
@@ -95,47 +96,6 @@ The script trains three different classification models:
 - ROCR
 - pROC
 - ggplot2
-
-## Usage Instructions
-
-### 1. Data Preprocessing
-Run the Jupyter notebook to preprocess the raw data:
-```bash
-jupyter notebook preprocessing_review_data.ipynb
-```
-
-### 2. Model Training and Evaluation
-Execute the R script to train models and generate evaluations:
-```r
-source("review_classifier.R")
-```
-
-## Results
-
-The project generates several outputs:
-
-1. **Processed Datasets**: Clean, balanced review data ready for analysis
-2. **Trained Models**: Saved Random Forest and SVM models for future predictions
-3. **Evaluation Visualizations**:
-   - ROC curve comparisons
-   - Confusion matrix heatmaps
-   - Feature importance plots
-
-## Model Performance
-
-The script provides comprehensive evaluation metrics for all three models, allowing for direct comparison of their performance on the video game review classification task.
-
-## Future Enhancements
-
-- Implement deep learning models (LSTM, BERT)
-- Add more sophisticated text preprocessing techniques
-- Experiment with different feature extraction methods
-- Expand to multi-class classification (5-star rating prediction)
-- Deploy model as a web application
-
-## Contributing
-
-This is a group project for social media analysis. Please coordinate with team members before making significant changes.
 
 ## License
 
