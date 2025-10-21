@@ -312,8 +312,8 @@ ggplot(importance_df, aes(x = Importance, y = Feature, fill = Importance)) +
 
 
 # save best model of svm and random_forest
-saveRDS(model_svm2, file = "model/svm_model.rds")
-saveRDS(model_rf, file = "model/random_forest_model.rds")
+# saveRDS(model_svm2, file = "model/svm_model.rds")
+# saveRDS(model_rf, file = "model/random_forest_model.rds")
 ### THE END ###
 
 
