@@ -1,4 +1,4 @@
-# Social Media Analysis: Video Game Review Sentiment Classification & Topic Modeling
+# Amazon Video Game Review Sentiment Classification & Topic Modeling
 
 ## Project Overview
 
