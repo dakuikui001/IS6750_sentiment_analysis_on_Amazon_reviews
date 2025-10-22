@@ -79,11 +79,6 @@ The R script performs unsupervised topic discovery using Structural Topic Modeli
 - **STM Implementation**: Applies Structural Topic Modeling with K=4 topics
 - **Topic Labeling**: Extracts top words for each topic using FREX scoring
 
-#### Topic Visualization
-- **Word Clouds**: Creates FREX-based word clouds for each of the 4 discovered topics
-- **Topic Interpretation**: Provides interpretable topic labels and key terms
-- **Model Persistence**: Saves trained STM model for future analysis
-
 #### Key Features of Topic Modeling
 - **Unsupervised Learning**: Discovers latent topics without predefined categories
 - **FREX Scoring**: Uses FREX (Frequency + Exclusivity) for better topic word selection
