@@ -1,8 +1,8 @@
-# Amazon Video Game Review Sentiment Classification & Topic Modeling
+# Social Media Analysis: Video Game Review Sentiment Classification & Topic Modeling
 
 ## Project Overview
 
-This repository contains a comprehensive social media analysis pipeline for video game reviews, featuring both supervised classification and unsupervised topic modeling. The project includes data preprocessing, feature extraction, sentiment classification using multiple machine learning algorithms, and topic discovery using Structural Topic Modeling (STM).
+This repository contains a comprehensive social media analysis pipeline for video game reviews, featuring both supervised classification and unsupervised topic modeling. The project includes data preprocessing, feature extraction, sentiment classification using multiple machine learning algorithms, and topic discovery using Latent Dirichlet Allocation (LDA).
 
 ## Dataset
 
@@ -16,11 +16,12 @@ group_project/
 ├── data/
 │   ├── Video_Games_5.json.gz          # Original Amazon video game reviews dataset
 │   ├── game_reviews.csv               # Processed review data (6000 samples)
+│   ├── game_reviews_for_topicModeling.csv  # Topic modeling dataset (20000 samples)
 │   └── df_review.tf_label.csv         # Final dataset with TF-IDF features
 ├── model/
 │   ├── random_forest_model.rds        # Trained Random Forest model
 │   ├── svm_model.rds                  # Trained SVM model
-│   └── stm_model_K4.rds               # Trained STM topic model (K=4)
+│   └── sdm_model.rds                  # Trained LDA topic model (K=15)
 ├── preprocessing_review_data.ipynb    # Data preprocessing notebook
 ├── review_classifier.R                # Model training and evaluation script
 ├── topic_modeling.R                   # Topic modeling analysis script
@@ -71,19 +72,51 @@ The script trains three different classification models:
 
 ### 3. Topic Modeling (`topic_modeling.R`)
 
-The R script performs unsupervised topic discovery using Structural Topic Modeling (STM):
+The R script performs unsupervised topic discovery using Latent Dirichlet Allocation (LDA) with the `textmineR` package:
 
-#### Topic Discovery
-- **Data Preparation**: Uses the same preprocessed review data from `game_reviews.csv`
-- **Document Processing**: Converts text to document-term matrix format compatible with STM
-- **STM Implementation**: Applies Structural Topic Modeling with K=4 topics
-- **Topic Labeling**: Extracts top words for each topic using FREX scoring
+#### Data Preparation
+- **Data Loading**: Reads preprocessed review data from `game_reviews_for_topicModeling.csv`
+- **Text Lemmatization**: Uses `textstem::lemmatize_strings` to normalize words
+- **Train-Test Split**: Partitions dataset into 50% training and 50% test sets
+- **Document-Term Matrix**: Creates DTM using `textmineR::CreateDtm` with:
+  - N-grams (unigrams and bigrams)
+  - English and SMART stopword removal
+  - Punctuation and number removal
+  - Lowercase conversion
+
+#### Topic Model Development
+- **LDA Modeling**: Fits LDA model using `textmineR::FitLdaModel` (K=15 topics)
+- **Model Evaluation Metrics**:
+  - R-squared: Overall goodness of fit
+  - Log Likelihood: Model convergence tracking
+  - Probabilistic Coherence: Topic quality measurement
+  - Topic Prevalence: Distribution of topics across corpus
+- **Alpha Parameter**: Optimizes topic-topic distribution for balanced topics
+- **Beta Parameter**: Controls word-topic distribution (0.01)
+
+#### Topic Analysis
+- **Top Terms**: Extracts top 20 terms for each topic based on word-topic probabilities
+- **Topic Labeling**: Uses naive labeling algorithm based on probable bigrams
+- **Coherence Visualization**: Creates histogram of coherence scores
+- **Prevalence Visualization**: Scatter plot of topic prevalence vs. alpha parameters
+
+#### Topic Visualization
+- **Word Clouds**: Generates exclusivity-based word clouds for individual topics
+  - Calculates exclusivity scores (topic-specific words vs. other topics)
+  - Uses `ggwordcloud` for publication-ready visualizations
+- **Topic Interpretation**: Provides interpretable topic labels and key terms
+
+#### Test Set Application
+- **Topic Prediction**: Applies trained LDA model to test set using Gibbs sampling
+- **Topic Distribution Visualization**: Creates bar plots showing probabilistic topic distributions for specific reviews
+- **Iterative Prediction**: Uses 1000 iterations with 50 burn-in iterations
 
 #### Key Features of Topic Modeling
-- **Unsupervised Learning**: Discovers latent topics without predefined categories
-- **FREX Scoring**: Uses FREX (Frequency + Exclusivity) for better topic word selection
-- **Visualization**: Generates word clouds to visualize topic content
-- **Reproducible**: Uses fixed random seed for consistent results
+- **Unsupervised Learning**: Discovers latent topics (K=15) without predefined categories
+- **Exclusivity Scoring**: Calculates topic-specific words relative to other topics
+- **Comprehensive Evaluation**: Uses multiple quality metrics (coherence, R², log-likelihood)
+- **Train-Test Validation**: Evaluates model performance on held-out test data
+- **Reproducible**: Uses fixed random seeds for consistent results
 
 ## Key Features
 
@@ -91,7 +124,7 @@ The R script performs unsupervised topic discovery using Structural Topic Modeli
 - **Robust Text Processing**: Comprehensive cleaning and normalization
 - **Multiple ML Algorithms**: Comparison of Naive Bayes, SVM, and Random Forest
 - **Comprehensive Evaluation**: ROC curves, confusion matrices, and feature importance
-- **Topic Discovery**: Unsupervised topic modeling to identify latent themes
+- **Topic Discovery**: LDA-based topic modeling with comprehensive quality metrics
 - **Reproducible Results**: Set random seeds for consistent outputs
 
 ## Dependencies
@@ -113,31 +146,35 @@ The R script performs unsupervised topic discovery using Structural Topic Modeli
 - ROCR
 - pROC
 - ggplot2
-- stm
+- textmineR
 - wordcloud2
 - ggwordcloud
 - Matrix
+- textstem
+- caTools
+- stopwords
 
 ## Results
 
 The project generates several outputs:
 
 1. **Processed Datasets**: Clean, balanced review data ready for analysis
-2. **Trained Models**: Saved Random Forest, SVM, and STM models for future predictions
+2. **Trained Models**: Saved Random Forest, SVM, and LDA topic models for future predictions
 3. **Classification Evaluation Visualizations**:
    - ROC curve comparisons
    - Confusion matrix heatmaps
    - Feature importance plots
 4. **Topic Modeling Visualizations**:
-   - FREX-based word clouds for each discovered topic
-   - Topic labels and key terms
-   - Interpretable topic themes
+   - Exclusivity-based word clouds for individual topics
+   - Topic labels and key terms with naive labeling
+   - Coherence histograms and prevalence scatter plots
+   - Topic distribution visualizations for sample reviews
 
 ## Model Performance
 
 The project provides comprehensive evaluation metrics for:
 - **Classification Models**: Direct comparison of Naive Bayes, SVM, and Random Forest performance
-- **Topic Models**: Interpretable topic discovery with 4 distinct themes identified through STM
+- **Topic Models**: Interpretable topic discovery with 15 topics identified through LDA, with coherence, R², and likelihood metrics
 
 ## License
 
